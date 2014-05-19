@@ -535,6 +535,11 @@
 			<name>CodeHaus Releases</name>
 			<url>http://repository.codehaus.org/</url>
 		</repository>
+		<repository>
+			<id>mulesoft-snapshots</id>
+			<name>MuleSoft Releases</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/</url>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>

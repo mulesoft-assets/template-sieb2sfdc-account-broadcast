@@ -20,8 +20,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<!-- This is the main configuration files, you should place here all the Connectors configuration an declarations -->
 
     <context:property-placeholder location="common.properties, mule.${mule.env}.properties"/>
-    
-    <smtp:gmail-connector name="gmailConnector" doc:name="Gmail" validateConnections="true" doc:description="This is the connector used to send email notifications. You should change its configuration to select a different email provider"/>
 
     <siebel:config name="Oracle_Siebel_Business_Objects" user="${sieb.user}" password="${sieb.password}" server="${sieb.server}" serverName="${sieb.serverName}" objectManager="${sieb.objectManager}" doc:name="Oracle Siebel Business Objects" doc:description="Destination Oracle Siebel Business Objects instance. This is the destination organization, where accounts will be migrated to." port="${sieb.port}">
         <siebel:connection-pooling-profile initialisationPolicy="INITIALISE_ONE" exhaustedAction="WHEN_EXHAUSTED_GROW"/>
