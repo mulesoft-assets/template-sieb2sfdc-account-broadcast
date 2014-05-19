@@ -43,7 +43,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 					doc:name="remove unnecessary fields and map field types"><![CDATA[payload.remove('LastModifiedDate');
 
 // TODO - This is necessary due to: https://www.mulesoft.org/jira/browse/CLDCONNECT-1248
-if (payload['NumberOfEmployees'] != null) {
+if (!payload['NumberOfEmployees'].isEmpty()) {
 	payload.put('NumberOfEmployees', Integer.parseInt(payload['NumberOfEmployees']) );
 }]]></expression-component>
 				<batch:commit size="200" doc:name="Batch Commit">
