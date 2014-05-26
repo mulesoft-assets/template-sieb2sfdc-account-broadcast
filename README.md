@@ -19,7 +19,7 @@ Note that using this template is subject to the conditions of this [License Agre
 Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule ESB Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 
 # Use Case <a name="usecase"/>
-This Anypoint Template should serve as a foundation for setting an online sync of accounts from one SalesForce instance to another.
+This Anypoint Template should serve as a foundation for setting an online sync of accounts from Oracle Siebel Business Objects to Siebel.
 Everytime there is a new account or a change in an already existing one, the integration will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
@@ -80,8 +80,8 @@ In order to use this Anypoint Template you need to configure properties (Credent
 + sieb.objectManager `EAIObjMgr_enu`
 + sieb.port `2321`
 
-#### SalesForce Connector configuration
-+ sfdc.username `bob.dylan@orga`
+#### Salesforce Connector configuration
++ sfdc.username `bob.dylan@org`
 + sfdc.password `DylanPassword123`
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
 + sfdc.url `https://login.salesforce.com/services/Soap/u/28.0`

@@ -23,15 +23,15 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
             <batch:step name="transformFieldsFromSiebelToSalesforceStep">
                 <data-mapper:transform config-ref="map_to_map" doc:name="Map To Map"/>
             </batch:step>
-			<batch:step name="foreachAccountInAGetAccountInBStep">
-				<enricher source="#[payload]" target="#[recordVars['accountInB']]"
-					doc:name="store result in record var 'accountInB'">
+			<batch:step name="forEachAccountInSiebelGetAccountInSalesforceStep">
+				<enricher source="#[payload]" target="#[recordVars['accountInSalesforce']]"
+					doc:name="store result in record var 'accountInSalesforce'">
 					<sfdc:query-single config-ref="Salesforce"
 						query="SELECT Id FROM Account WHERE Name = '#[payload['Name']]'"
-						doc:name="query Account in Salesforce Instance B" />
+						doc:name="query Account from Salesforce" />
 				</enricher>
 			</batch:step>
-			<batch:step name="foreachAccountInAUpsertAccountInBStep">
+			<batch:step name="forEachAccountInSiebelUpsertAccountInSalesforceStep">
 				<expression-component doc:name="set ID for upsert"><![CDATA[if (recordVars['accountInB'] instanceof NullPayload) {
 	// Remove ID as it is an insert
 	payload.remove('Id')
