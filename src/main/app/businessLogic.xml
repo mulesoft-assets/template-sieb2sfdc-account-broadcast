@@ -4,7 +4,7 @@
 	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
 	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.0"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
@@ -32,15 +32,18 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 				</enricher>
 			</batch:step>
 			<batch:step name="forEachAccountInSiebelUpsertAccountInSalesforceStep">
-				<expression-component doc:name="set ID for upsert"><![CDATA[if (recordVars['accountInB'] instanceof NullPayload) {
+				<expression-component
+					doc:name="prepare for upsert"><![CDATA[// setup ID
+if (recordVars['accountInSalesforce'] instanceof NullPayload) {
 	// Remove ID as it is an insert
 	payload.remove('Id')
 } else {
 	// Add target system ID as it is an update
-    payload.put('Id', recordVars['accountInB']['Id'])
-}]]></expression-component>
-				<expression-component
-					doc:name="remove unnecessary fields and map field types"><![CDATA[payload.remove('LastModifiedDate');
+    payload.put('Id', recordVars['accountInSalesforce']['Id'])
+}
+
+// remove unnecessary fields
+payload.remove('LastModifiedDate');
 
 // TODO - This is necessary due to: https://www.mulesoft.org/jira/browse/CLDCONNECT-1248
 if (!payload['NumberOfEmployees'].isEmpty()) {
