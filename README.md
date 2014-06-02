@@ -70,7 +70,7 @@ In order to use this Anypoint Template you need to configure properties (Credent
 ### Application configuration
 + poll.frequencyMillis `60000`
 + poll.startDelayMillis `0`
-+ watermark.defaultExpression `#[org.joda.time.format.DateTimeFormat.forPattern("M/d/y H:m:s").parseDateTime("01/01/2010 00:00:00")]`
++ watermark.defaultExpression `#[System.currentTimeMillis() - 1000 * 60 * 60 * 24]`
 
 #### Oracle Siebel Business Objects Connector configuration
 + sieb.user `SADMIN`
