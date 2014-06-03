@@ -27,40 +27,37 @@ Here you should not:
     	<poll doc:name="fireup Account synchronization">
             <fixed-frequency-scheduler frequency="${polling.frequency}" startDelay="${polling.start.delay}" />
             <watermark variable="lastQueryDate" default-expression="${watermark.default.expression}" selector="MAX" selector-expression="#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).parseDateTime(payload['Last Update - SDQ'])]"/>
-            <processor-chain doc:name="Processor Chain">
-                <logger message="([Employees] &gt; 5000) AND ([Account Updated] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" level="INFO" category="XXX" doc:name="Logger"/>
-                <siebel:query-business-components config-ref="Oracle_Siebel_Business_Objects" businessObjectComponentType="Account.Account" searchExpression="([Employees] &gt; 5000) AND ([Last Update - SDQ] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" doc:name="query Accounts with filtering criteria from Oracle Siebel Business Objects">
-                    <siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Account Number</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Annual Revenue</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Source</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Bill To City</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Bill To Country</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Bill To Postal Code</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Bill To State</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Bill To Street Address</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Description</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Fax Number</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Industry</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Last Update - SDQ</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Name</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Employees</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ownership Type</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Parent Account Id</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Phone Number</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Rate</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ship To City</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ship To Country</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ship To Postal Code</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ship To State</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ship To Street Address</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>SIC Code</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Ticker</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Type</siebel:fields-to-retrieve>
-                        <siebel:fields-to-retrieve>Home Page</siebel:fields-to-retrieve>
-                    </siebel:fields-to-retrieve>
-                </siebel:query-business-components>
-            </processor-chain>
+            <siebel:query-business-components config-ref="Oracle_Siebel_Business_Objects" businessObjectComponentType="Account.Account" searchExpression="([Employees] &gt; 5000) AND ([Last Update - SDQ] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" doc:name="query Accounts with filtering criteria from Oracle Siebel Business Objects">
+                <siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Account Number</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Annual Revenue</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Source</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Bill To City</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Bill To Country</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Bill To Postal Code</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Bill To State</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Bill To Street Address</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Description</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Fax Number</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Industry</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Last Update - SDQ</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Name</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Employees</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ownership Type</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Parent Account Id</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Phone Number</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Rate</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ship To City</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ship To Country</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ship To Postal Code</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ship To State</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ship To Street Address</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>SIC Code</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Ticker</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Type</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Home Page</siebel:fields-to-retrieve>
+                </siebel:fields-to-retrieve>
+            </siebel:query-business-components>
         </poll>
         <logger message="#[payload]" level="INFO" doc:name="log created/updated Accounts"/>
         <batch:execute name="syncAccountsBatch" doc:name="trigger syncAccountsBatch"/>
