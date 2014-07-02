@@ -50,7 +50,10 @@ if (!payload['NumberOfEmployees'].isEmpty()) {
 	payload.put('NumberOfEmployees', Integer.parseInt(payload['NumberOfEmployees']) );
 }]]></expression-component>
 				<batch:commit size="200" doc:name="Batch Commit">
-                    <flow-ref name="commitAccountsFlow" doc:name="Flow Reference"/>
+			        <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="upsert Accounts in Salesforce">
+			            <sfdc:objects ref="#[payload]"/>
+			        </sfdc:upsert>
+			        <logger message="Upsert result: #[payload]" level="ERROR" doc:name="log Result"/>
 				</batch:commit>
 			</batch:step>
 		</batch:process-records>
@@ -61,12 +64,5 @@ if (!payload['NumberOfEmployees'].isEmpty()) {
 				message="Migration process has finished: #[payload]" />
 		</batch:on-complete>
 	</batch:job>
-    <flow name="commitAccountsFlow" doc:name="commitAccountsFlow">
-        <logger message="Accounts to update/create: #[payload]" level="INFO" doc:name="log Accounts to update/create"/>
-        <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="upsert Accounts in Salesforce">
-            <sfdc:objects ref="#[payload]"/>
-        </sfdc:upsert>
-        <logger message="Upsert result: #[payload]" level="ERROR" doc:name="log Result"/>
-    </flow>
 
 </mule>
