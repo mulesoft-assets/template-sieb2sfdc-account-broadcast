@@ -95,7 +95,6 @@ public class BusinessLogicIT extends FunctionalTestCase {
 		// Flow to retrieve accounts from target system after sync in g
 		retrieveAccountFromSalesforceFlow = getSubFlow("retrieveAccountFromSalesforceFlow");
 		retrieveAccountFromSalesforceFlow.initialise();
-	
 		createTestDataInSandBox();
 	}
 
