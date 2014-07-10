@@ -5,7 +5,7 @@ xmlns="http://www.mulesoft.org/schema/mule/core"
 xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.6.0" 
+version="EE-3.5.0" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
@@ -24,10 +24,10 @@ Here you should:
 Here you should not: 
 	* Run validations against external systems
 	* Choose flow of you application based on input parameters">
-    	<poll doc:name="fireup Account synchronization">
+    	<poll doc:name="fireup synchronization">
             <fixed-frequency-scheduler frequency="${polling.frequency}" startDelay="${polling.start.delay}" />
             <watermark variable="lastQueryDate" default-expression="${watermark.default.expression}" selector="MAX" selector-expression="#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).parseDateTime(payload['Last Update - SDQ'])]"/>
-            <siebel:query-business-components config-ref="Oracle_Siebel_Business_Objects" businessObjectComponentType="Account.Account" searchExpression="([Employees] &gt; 5000) AND ([Last Update - SDQ] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" doc:name="query Accounts with filtering criteria from Oracle Siebel Business Objects">
+            <siebel:query-business-components config-ref="Oracle_Siebel_Business_Objects" businessObjectComponentType="Account.Account" searchExpression="([Employees] &gt; 5000) AND ([Last Update - SDQ] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" doc:name="query accounts with filtering criteria from Oracle Siebel Business Objects">
                 <siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Account Number</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Annual Revenue</siebel:fields-to-retrieve>
@@ -59,8 +59,7 @@ Here you should not:
                 </siebel:fields-to-retrieve>
             </siebel:query-business-components>
         </poll>
-        <logger message="#[payload]" level="INFO" doc:name="log created/updated Accounts"/>
-        <flow-ref name="mainFlow" doc:name="Trigger mainFlow"/>
+        <flow-ref name="mainFlow" doc:name="call mainFlow"/>
     </flow>
     
 </mule>

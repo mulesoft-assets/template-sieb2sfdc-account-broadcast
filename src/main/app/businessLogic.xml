@@ -4,7 +4,7 @@
 	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
 	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
@@ -21,14 +21,14 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 		<batch:threading-profile poolExhaustedAction="WAIT" />
 		<batch:process-records>
             <batch:step name="transformFieldsFromSiebelToSalesforceStep">
-                <data-mapper:transform config-ref="map_to_map" doc:name="Map To Map"/>
+                <data-mapper:transform config-ref="map_to_map" doc:name="transform Siebel contact to Salesforce contact"/>
             </batch:step>
 			<batch:step name="forEachAccountInSiebelGetAccountInSalesforceStep">
 				<enricher source="#[payload]" target="#[recordVars['accountInSalesforce']]"
-					doc:name="store result in record var 'accountInSalesforce'">
+					doc:name="store Salesforce account in record  var 'accountInSalesforce'">
 					<sfdc:query-single config-ref="Salesforce"
 						query="SELECT Id FROM Account WHERE Name = '#[payload['Name']]'"
-						doc:name="query Account from Salesforce" />
+						doc:name="query account from Salesforce" />
 				</enricher>
 			</batch:step>
 			<batch:step name="forEachAccountInSiebelUpsertAccountInSalesforceStep">
@@ -50,7 +50,7 @@ if (!payload['NumberOfEmployees'].isEmpty()) {
 	payload.put('NumberOfEmployees', Integer.parseInt(payload['NumberOfEmployees']) );
 }]]></expression-component>
 				<batch:commit size="200" doc:name="Batch Commit">
-			        <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="upsert Accounts in Salesforce">
+			        <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="upsert accounts in Salesforce">
 			            <sfdc:objects ref="#[payload]"/>
 			        </sfdc:upsert>
 			        <logger message="Upsert result: #[payload]" level="ERROR" doc:name="log Result"/>
@@ -66,7 +66,7 @@ if (!payload['NumberOfEmployees'].isEmpty()) {
 	</batch:job>
 
     <flow name="mainFlow" doc:name="mainFlow">
-        <batch:execute name="syncAccountsBatch" doc:name="Batch Execute"/>
-        <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="Reference Exception Strategy"/>
+        <batch:execute name="syncAccountsBatch" doc:name="trigger syncAccountBatch"/>
+        <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="catch Exception and call defaultChoiceExceptionStrategy"/>
     </flow>
 </mule>
