@@ -61,7 +61,7 @@ Here you should not:
                 </siebel:fields-to-retrieve>
             </siebel:query-business-components>
         </poll>
-        <logger message="lastQueryDate: #[lastQueryDate]" level="INFO" doc:name="Logger"/>
+
         <flow-ref name="mainFlow" doc:name="call mainFlow"/>
     </flow>
     
