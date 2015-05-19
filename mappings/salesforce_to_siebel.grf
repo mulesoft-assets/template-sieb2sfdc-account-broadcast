@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><Graph author="martin" created="Fri May 16 14:35:50 CEST 2014" description="Salesforce to Siebel" guiVersion="3.4.3.P" id="1400247082619" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri May 16 14:35:50 CEST 2014" modifiedBy="martin" name="Salesforce_to_Siebel" revision="1.0" showComponentDetails="false">
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="martin" created="Fri May 16 14:35:50 CEST 2014" description="Salesforce to Siebel" guiVersion="3.4.3.P" id="1400247082619" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri May 16 14:35:50 CEST 2014" modifiedBy="martin" name="Salesforce_to_Siebel" revision="1.0" showComponentDetails="false">
 <Global>
 <Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Salesforce" _dataStructure="OBJECT" _id="__id" _type="Input" id="90276a01-13b7-4e27-8a18-c12eb8874688">
 <Record fieldDelimiter="," name="Salesforce" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
@@ -18,7 +18,7 @@
 <Field __index="0" __sourcePath="{}/Siebel/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
 <Field __sourcePath="{}/Siebel/Home_x0020Page" containerType="SINGLE" label="Home Page" name="Home_Page" type="string"/>
 <Field __sourcePath="{}/Siebel/Industry" containerType="SINGLE" label="Industry" name="Industry" type="string"/>
-<Field __sourcePath="{}/Siebel/Phone_x0020Number" containerType="SINGLE" label="Phone Number" name="Phone_Number" type="string"/>
+<Field __sourcePath="{}/Siebel/Main_x0020Phone_x0020Number" containerType="SINGLE" label="Main Phone Number" name="Main_Phone_Number" type="string"/>
 <Field __sourcePath="{}/Siebel/Employees" containerType="SINGLE" label="Employees" name="Employees" type="string"/>
 <Field __sourcePath="{}/Siebel/Industry_x0020Id" containerType="SINGLE" label="Industry Id" name="Industry_Id" type="string"/>
 <Field __sourcePath="{}/Siebel/SIC_x0020Code" containerType="SINGLE" label="SIC Code" name="SIC_Code" type="string"/>
@@ -53,12 +53,12 @@ output.__id = input.__id;
 //END -> DO NOT REMOVE
 output.Name = input.Name;
 output.Home_Page = input.Website;
-output.Phone_Number = input.Phone;
+output.Main_Phone_Number = input.Phone;
 output.Employees = input.NumberOfEmployees;
 output.SIC_Code = input.Industry;
 output.City = input.City;
 output.Street_Address = input.Street;
-]]></attr>
+output.Main_Phone_Number = input.Phone;]]></attr>
 </Node>
 <Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +66,7 @@ output.Street_Address = input.Street;
   <Name>$0.Name</Name>
   <clover:element clover:name="Home Page">$0.Home_Page</clover:element>
   <Industry>$0.Industry</Industry>
-  <clover:element clover:name="Phone Number">$0.Phone_Number</clover:element>
+  <clover:element clover:name="Main Phone Number">$0.Main_Phone_Number</clover:element>
   <Employees>$0.Employees</Employees>
   <clover:element clover:name="Industry Id">$0.Industry_Id</clover:element>
   <clover:element clover:name="SIC Code">$0.SIC_Code</clover:element>

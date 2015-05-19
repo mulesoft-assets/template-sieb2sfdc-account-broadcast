@@ -6,16 +6,16 @@
 	<sections>
 		<section id="use_case">
 This Anypoint Template should serve as a foundation for setting an online sync of accounts from Oracle Siebel Business Objects to Salesforce.
-Everytime there is a new account or a change in an already existing one, the integration will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
+Everytime there is a new account or a change in an already existing one, the integration app will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
-As implemented, this Anypoint Template leverage the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
-The batch job is divided in Input, Process and On Complete stages.
-The integration is triggered by a poll defined in the flow that is going to trigger the application, querying newest Oracle Siebel Business Objects updates/creations matching a filter criteria and executing the batch job.
-During the Process stage, each Siebel Account will be filtered depending on, if it has an existing matching Account in Salesforce.
+As implemented, this Anypoint Template leverages the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
+The batch job is divided in *Input*, *Process* and *On Complete* stages.
+The integration is triggered by a poll defined in the flow. The app then makes a query for the newest Oracle Siebel Business Objects updates/creations matching a filtering criteria and executing the batch job.
+During the *Process* stage, each Siebel Account will be filtered depending on, if it has an existing matching Account in Salesforce.
 The last step of the Process stage will group the users and create/update them in Salesforce.
-Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
+Finally during the *On Complete* stage the Anypoint Template will log statistics data into the console.
 		</section>		
 		<section id="considerations">
 <![CDATA[
@@ -41,7 +41,7 @@ Once your app is all set and started, there is no need to do anything else. Ever
 		<![CDATA[
 + poll.frequencyMillis `60000`
 + poll.startDelayMillis `0`
-+ watermark.defaultExpression `#[System.currentTimeMillis() - 1000 * 60 * 60 * 24]`
++ watermark.defaultExpression `"05/19/2015 10:00:00"`
 
 #### Oracle Siebel Business Objects Connector configuration
 + sieb.user `SADMIN`
@@ -55,20 +55,20 @@ Once your app is all set and started, there is no need to do anything else. Ever
 + sfdc.username `bob.dylan@org`
 + sfdc.password `DylanPassword123`
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
-+ sfdc.url `https://login.salesforce.com/services/Soap/u/28.0`
++ sfdc.url `https://login.salesforce.com/services/Soap/u/32.0`
 ]]>
 		</section>
 		<section id="api_calls">
 		<![CDATA[
 Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The Anypoint Template calls to the API can be calculated using the formula:
 
-***1 + X + X / 200***
+***X + X / 200***
 
 Being ***X*** the number of Accounts to be synchronized on each run. 
 
 The division by ***200*** is because, by default, Accounts are gathered in groups of 200 for each Upsert API Call in the commit step. Also consider that this calls are executed repeatedly every polling cycle.	
 
-For instance if 10 records are fetched from origin instance, then 12 api calls will be made (1 + 10 + 1).
+For instance if 10 records are fetched from origin instance, then 11 api calls will be made (10 + 1).
 ]]>
 		</section>
 		<section id="default_business_logic_xml">
@@ -78,10 +78,10 @@ This file holds the functional aspect of the Anypoint Template, directed by one 
 Functional aspect of the Anypoint Template is implemented on this XML, directed by one flow that will poll for SalesForce creations/updates.
 Several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
 
-1. During the Input stage the Anypoint Template will query all the existing accounts from Oracle Siebel Business Objects modified after watermark.
-2. During the Process stage, each Account will be filtered depending on, if it has an existing matching account in the Salesforce.
+1. During the *Input* stage the Anypoint Template will query all the existing accounts from Oracle Siebel Business Objects created/modified after watermark.
+2. During the *Process* stage, each Account will be filtered depending on, if it has an existing matching account in the Salesforce.
 3. The last step of the Process stage will group the accounts and create/update them in Salesforce.
-Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
+Finally during the *On Complete* stage the Anypoint Template will log statistics data into the console.
 ]]>
 		</section>
 		<section id="default_endpoints_xml">

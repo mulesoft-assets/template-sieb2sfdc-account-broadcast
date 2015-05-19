@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http" 
+<mule xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" 
+xmlns:batch="http://www.mulesoft.org/schema/mule/batch" 
+xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.5.0" 
+version="EE-3.6.2" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
@@ -17,7 +18,7 @@ http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/s
 
 	<!-- 	In this file you should declare all your inbound endpoints and from here controll the access to your application -->
 
-    <flow name="triggerFlow" processingStrategy="synchronous"   doc:name="triggerFlow" doc:description="This is the simpliest entry point to start the excecution of your Anypoint Template
+    <flow name="triggerFlow" processingStrategy="synchronous"    doc:description="This is the simpliest entry point to start the excecution of your Anypoint Template
 Here you should: 
 	* Configure the inbound endpoint, in this case a polling to fetch data from origin system
 	* Handle any input parameter and set the scope of it so the main logic does not care from where it is called
@@ -26,7 +27,7 @@ Here you should not:
 	* Choose flow of you application based on input parameters">
     	<poll doc:name="fireup synchronization">
             <fixed-frequency-scheduler frequency="${polling.frequency}" startDelay="${polling.start.delay}" />
-            <watermark variable="lastQueryDate" default-expression="${watermark.default.expression}" selector="MAX" selector-expression="#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).parseDateTime(payload['Last Update - SDQ'])]"/>
+            <watermark variable="lastQueryDate" default-expression="#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).parseDateTime(&quot;${watermark.default.expression}&quot;)]" selector="MAX" selector-expression="#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).parseDateTime(payload['Last Update - SDQ'])]"/>
             <siebel:query-business-components config-ref="Oracle_Siebel_Business_Objects" businessObjectComponentType="Account.Account" searchExpression="([Employees] &gt; 5000) AND ([Last Update - SDQ] &gt; '#[org.joda.time.format.DateTimeFormat.forPattern(&quot;M/d/y H:m:s&quot;).print(flowVars['lastQueryDate'])]')" doc:name="query accounts with filtering criteria from Oracle Siebel Business Objects">
                 <siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Account Number</siebel:fields-to-retrieve>
@@ -38,14 +39,14 @@ Here you should not:
                     <siebel:fields-to-retrieve>Bill To State</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Bill To Street Address</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Description</siebel:fields-to-retrieve>
-                    <siebel:fields-to-retrieve>Fax Number</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Main Fax Number</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Industry</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Last Update - SDQ</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Name</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Employees</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Ownership Type</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Parent Account Id</siebel:fields-to-retrieve>
-                    <siebel:fields-to-retrieve>Phone Number</siebel:fields-to-retrieve>
+                    <siebel:fields-to-retrieve>Main Phone Number</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Rate</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Ship To City</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Ship To Country</siebel:fields-to-retrieve>
@@ -56,9 +57,11 @@ Here you should not:
                     <siebel:fields-to-retrieve>Ticker</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Type</siebel:fields-to-retrieve>
                     <siebel:fields-to-retrieve>Home Page</siebel:fields-to-retrieve>
+
                 </siebel:fields-to-retrieve>
             </siebel:query-business-components>
         </poll>
+        <logger message="lastQueryDate: #[lastQueryDate]" level="INFO" doc:name="Logger"/>
         <flow-ref name="mainFlow" doc:name="call mainFlow"/>
     </flow>
     
