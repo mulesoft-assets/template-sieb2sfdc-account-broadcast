@@ -27,7 +27,7 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 This Anypoint Template should serve as a foundation for setting an online sync of accounts from Oracle Siebel Business Objects to Salesforce.
-Everytime there is a new account or a change in an already existing one, the integration app will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
+Everytime there is a new account or a change in an already existing one, we will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 

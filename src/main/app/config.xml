@@ -17,8 +17,8 @@ http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/s
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd"
 >
 	
-	<!-- This is the main configuration files, you should place here all the Connectors configuration an declarations -->
-
+	<!-- This is the main configuration files, you should place here all the Connectors configuration and declarations -->
+	
     <context:property-placeholder location="common.properties, mule.${mule.env}.properties"/>
 
     <siebel:config name="Oracle_Siebel_Business_Objects" user="${sieb.user}" password="${sieb.password}" server="${sieb.server}" serverName="${sieb.serverName}" objectManager="${sieb.objectManager}" doc:name="Oracle Siebel Business Objects" doc:description="Destination Oracle Siebel Business Objects instance. This is the destination organization, where accounts will be migrated to." port="${sieb.port}">
