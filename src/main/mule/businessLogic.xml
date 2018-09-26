@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+    xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+    xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<flow name="fromSiebeltoSalesforce" doc:id="2df888d8-96fd-4b28-8d6f-a26512367228" >
+		<batch:job jobName="fromSiebeltoSalesforceBatch" doc:id="8f590a10-d516-47d5-b49a-c7a1207e0a73" >
+			<batch:process-records >
+				<batch:step name="getAccountFromSalesforceStep" doc:id="ac1a49fd-c084-415f-8e30-284612480480" >
+					<ee:transform doc:name="Set account variable and query for Salesforce" doc:id="4811f2a6-80b5-4f30-800c-78f50d5a0316" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="account" ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<salesforce:query-single doc:name="Query Account from Salesforce" doc:id="06cd6ca9-38ec-4669-ba7a-fcc83078c74c" config-ref="Salesforce_Config" >
+						<salesforce:salesforce-query >SELECT Id, LastModifiedDate FROM Account WHERE Name = ':name'</salesforce:salesforce-query>
+						<salesforce:parameters ><![CDATA[#[output application/java
+---
+{
+	"name" : payload.Name
+}]]]></salesforce:parameters>
+					</salesforce:query-single>
+					<ee:transform doc:name="Set Siebel Account ID and LastModifiedDate" doc:id="b1e6a23e-e268-44b9-82b5-664e8af503b2" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+vars.account ++ {
+	SalesforceID: if ( payload.Id != null) payload.Id else null,
+	LastModifiedDateSalesforce: if (payload.LastModifiedDate != null) payload.LastModifiedDate else null
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</batch:step>
+				<batch:step name="UpsertInSalesforce" doc:id="bcb50a3c-eb11-4769-bc21-144b7c0c32a1">
+					<ee:transform doc:name="Data upsert to Salesforce" doc:id="b0a3bff7-e964-4b3d-bf1e-4ffaf4e43fdd" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	Id: payload.SalesforceID,
+	AnnualRevenue	: payload."Annual Revenue",
+	BillingCity: payload."Primary Account City",
+	BillingState: payload."Primary Account State",
+	BillingStreet: payload."Primary Account Street Address",
+	Description: payload.Description,
+	Fax: payload."Main Fax Number",
+	Name: payload.Name,
+	NumberOfEmployees: payload.Employees,
+	Phone: payload."Main Phone Number",
+	Rating: payload.Rate,
+	ShippingCity: payload."Primary Ship To City",
+	ShippingCountry: payload."Primary Ship To Country",
+	ShippingPostalCode: payload."Primary Ship To Postal Code",
+	ShippingState: payload."Primary Ship To State",
+	ShippingStreet: payload."Primary Ship To Street Address",
+	Website : payload."Home Page"
+	
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<batch:aggregator doc:name="Batch Aggregator" doc:id="1052eae6-10d5-456d-a853-72ce8758d8a4" size="${page.size}">
+						<salesforce:upsert-bulk type="Account" doc:name="Upsert Account in Salesforce" doc:id="316881e8-3205-4836-89e3-d6d7b2656d2a" config-ref="Salesforce_Config" externalIdFieldName="Id"/>
+						<logger level="INFO" doc:name="Log response" doc:id="ee3a22f2-e1bd-493a-b4a1-cb422de767f9" message="#[output application/json --- payload]" />
+					</batch:aggregator>
+				</batch:step>
+			</batch:process-records>
+            <batch:on-complete>
+                <ee:transform doc:name="Prepare migration result" doc:id="3f341359-e731-4223-bbc4-3adff5a6bfb0">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output text/plain
+---
+"Migration Report: \n"
+++ "\n Time [milliseconds]: "         ++ payload.elapsedTimeInMillis!
+++ "\n Total Records: "                ++ payload.totalRecords!
+++ "\n Successful Records: "        ++ payload.successfulRecords!
+++ "\n Failed Records: "            ++ payload.failedRecords!
+++ "\n Loaded Records: "            ++ payload.loadedRecords!
+++ "\n Processed Records: "         ++ payload.processedRecords!]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+                <logger level="INFO" doc:name="Migration process has finished!" doc:id="ee8b3429-859a-4cb9-ad85-9c7df5c84b6d"
+                    message="Migration process has finished: #[payload]" />
+
+            </batch:on-complete>
+		</batch:job>
+	</flow>
+
+</mule>
+
+
+        
