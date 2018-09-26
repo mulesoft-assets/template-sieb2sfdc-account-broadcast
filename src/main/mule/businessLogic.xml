@@ -44,7 +44,7 @@ vars.account ++ {
 					</ee:transform>
 				</batch:step>
 				<batch:step name="UpsertInSalesforce" doc:id="bcb50a3c-eb11-4769-bc21-144b7c0c32a1">
-					<ee:transform doc:name="Data upsert fo Salesforce" doc:id="b0a3bff7-e964-4b3d-bf1e-4ffaf4e43fdd" >
+					<ee:transform doc:name="Data upsert to Salesforce" doc:id="b0a3bff7-e964-4b3d-bf1e-4ffaf4e43fdd" >
 						<ee:message >
 							<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
