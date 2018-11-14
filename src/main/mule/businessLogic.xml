@@ -84,12 +84,12 @@ output application/java
 output text/plain
 ---
 "Migration Report: \n"
-++ "\n Time [milliseconds]: "         ++ payload.elapsedTimeInMillis!
-++ "\n Total Records: "                ++ payload.totalRecords!
-++ "\n Successful Records: "        ++ payload.successfulRecords!
-++ "\n Failed Records: "            ++ payload.failedRecords!
-++ "\n Loaded Records: "            ++ payload.loadedRecords!
-++ "\n Processed Records: "         ++ payload.processedRecords!]]></ee:set-payload>
+++ "\n Time [milliseconds]: "         ++ payload.elapsedTimeInMillis!!
+++ "\n Total Records: "                ++ payload.totalRecords!!
+++ "\n Successful Records: "        ++ payload.successfulRecords!!
+++ "\n Failed Records: "            ++ payload.failedRecords!!
+++ "\n Loaded Records: "            ++ payload.loadedRecords!!
+++ "\n Processed Records: "         ++ payload.processedRecords!!]]></ee:set-payload>
                     </ee:message>
                 </ee:transform>
                 <logger level="INFO" doc:name="Migration process has finished!" doc:id="ee8b3429-859a-4cb9-ad85-9c7df5c84b6d"
