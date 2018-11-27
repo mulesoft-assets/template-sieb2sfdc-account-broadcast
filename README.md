@@ -9,19 +9,19 @@
 This template is subject to the conditions of the <a href="https://s3.amazonaws.com/templates-examples/AnypointTemplateLicense.pdf">MuleSoft License Agreement</a>. Review the terms of the license before downloading and using this template. You can use this template for free with the Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio. 
 # Use Case
 <!-- Use Case (start) -->
-This Anypoint Template should serve as a foundation for setting an online sync of accounts from Oracle Siebel Business Objects to Salesforce.
+This Anypoint template serves as a foundation for setting an online sync of accounts from Oracle Siebel Business Objects to Salesforce.
 Every time there is a new account or a change in an already existing one, we will poll for changes from Oracle Siebel Business Objects source instance and it will be responsible for updating the account in Salesforce target instance.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
-As implemented, this Anypoint Template leverages the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
+As implemented, this template leverages the Mule batch module.
 
 The batch job is divided in *Process* and *On Complete* stages.
 
 The integration is triggered by a scheduler defined in the flow. The template then makes a query for the newest Oracle Siebel Business Objects updates/creations matching a filtering criteria and executing the batch job.
-During the *Process* stage, each Siebel Account will be filtered depending on existing matching Account in Salesforce.
-The last step of the *Process* stage will group the users and create/update them in Salesforce.
-Finally during the *On Complete* stage the Anypoint Template will log statistics data into the console.
+During the *Process* stage, each Siebel Account is filtered depending on existing matching Account in Salesforce.
+The last step of the *Process* stage groups the users and create/update them in Salesforce.
+Finally during the *On Complete* stage the template logs statistics data into the console.
 <!-- Use Case (end) -->
 
 # Considerations
@@ -30,7 +30,7 @@ Finally during the *On Complete* stage the Anypoint Template will log statistics
 <!-- Default Considerations (end) -->
 
 <!-- Considerations (start) -->
-To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both source and destination systems, that must be made in order for all to run smoothly. **Failing to do so could lead to unexpected behavior of the template.**
+To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both source and destination systems, that must be made for the template to run smoothly. **Failing to do so could lead to unexpected behavior of the template.**
 <!-- Considerations (end) -->
 
 
@@ -132,7 +132,7 @@ To use this template, configure properties such as credentials, configurations, 
 + watermark.default.expression `"2017-12-13T03:00:59Z"`
 + page.size `200`
 
-**Oracle Siebel Business Objects Connector configuration**
+**Oracle Siebel Business Objects Connector Configuration**
 + sieb.user `SADMIN`
 + sieb.password `SADMIN`
 + sieb.server `192.168.10.8`
@@ -140,7 +140,7 @@ To use this template, configure properties such as credentials, configurations, 
 + sieb.objectManager `EAIObjMgr_enu`
 + sieb.port `2321`
 
-**Salesforce Connector configuration**
+**Salesforce Connector Configuration**
 + sfdc.username `bob.dylan@org`
 + sfdc.password `DylanPassword123`
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
@@ -148,7 +148,7 @@ To use this template, configure properties such as credentials, configurations, 
 
 # API Calls
 <!-- API Calls (start) -->
-Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The Anypoint Template calls to the API can be calculated using the formula:
+Salesforce imposes limits on the number of API Calls that can be made. Therefore calculating this amount may be an important factor to consider. The template calls to the API can be calculated using the formula:
 
 ***X + X / ${page.size}***
 
@@ -179,15 +179,15 @@ This file provides the configuration for connectors and configuration properties
 
 ## businessLogic.xml
 <!-- Default Business Logic XML (start) -->
-This file holds the functional aspect of the Anypoint Template, directed by one flow responsible of conducting the business logic.
+This file holds the functional aspect of the template, directed by one flow responsible of conducting the business logic.
 
-Functional aspect of the Anypoint Template is implemented on this XML, directed by one flow that will poll for SalesForce creations/updates.
-Several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
+Functional aspect of the template is implemented on this XML, directed by one flow that will poll for SalesForce creations/updates.
+Several message processors constitute four high level actions that fully implement the logic of this template:
 
-1. The Anypoint Template queries all the existing accounts from Oracle Siebel Business Objects created/modified after watermark.
-2. During the *Process* stage, each Siebel Account will be filtered depending on existing matching Account in Salesforce.
-3. The last step of the *Process* stage will group the users, create/update them in Salesforce.
-4. Finally during the *On Complete* stage the Anypoint Template will log statistics data into the console.<!-- Default Business Logic XML (end) -->
+1. The template queries all the existing accounts from Oracle Siebel Business Objects created/modified after watermark.
+2. During the *Process* stage, each Siebel Account is filtered depending on existing matching Account in Salesforce.
+3. The last step of the *Process* stage groups the users, create/update them in Salesforce.
+4. Finally during the *On Complete* stage the template logs statistics data into the console.<!-- Default Business Logic XML (end) -->
 
 <!-- Business Logic XML (start) -->
 
