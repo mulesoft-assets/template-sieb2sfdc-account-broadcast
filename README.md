@@ -2,7 +2,11 @@
 # Anypoint Template: Siebel to Salesforce Account Broadcast	
 
 <!-- Header (start) -->
+Broadcasts changes to accounts in Siebel to Salesforce in real time. The detection criteria, and fields to move are configurable. Additional systems can be added to be notified of the changes. Real time synchronization is achieved via rapid polling of Siebel. 
 
+This template uses watermarking to ensure that only the most recent items are synchronized and batch to efficiently process many records at a time.
+
+![44e579a8-7ea2-48f3-bd4c-ff63890b7cb3-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/44e579a8-7ea2-48f3-bd4c-ff63890b7cb3-image.png)
 <!-- Header (end) -->
 
 # License Agreement
