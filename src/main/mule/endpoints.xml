@@ -26,14 +26,7 @@ http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/s
 		</error-handler>
 	</flow>
 	<flow name="queryFlowSiebel" doc:id="eb3adcd6-4f00-42ac-92da-6a2ed6806bbe" >
-		<ee:transform doc:name="Set format for default watermark" doc:id="614bd75d-f5b7-4fce-a5ee-469ccfa092ae" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
----
-p('watermark.default.expression') as DateTime as String {format: "MM/dd/yy HH:mm:ss"}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+		<set-payload value='#[${watermark.default.expression} as DateTime as String {format: "MM/dd/yy HH:mm:ss"}]' doc:name="Set format for default watermark" doc:id="33ea6d7e-1198-43bc-906c-b1f6e138fb27" />
 		<os:retrieve doc:name="Retrieve lastQueryDateSiebel" doc:id="ad6ada32-fa90-4c24-81d2-fccf0df532e3" key="watermark" objectStore="watermarkStore" target="lastQueryDateSiebel">
 			<os:default-value ><![CDATA[#[payload]]]></os:default-value>
 		</os:retrieve>
