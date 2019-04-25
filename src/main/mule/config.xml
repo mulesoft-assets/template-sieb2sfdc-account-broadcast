@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ns4="http://www.mulesoft.org/schema/mule/siebel" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 
     <salesforce:sfdc-config name="Salesforce_Config" doc:id="ea2f1597-8079-4696-b3ec-062bc7992169" doc:name="Salesforce Config">
         <salesforce:basic-connection password="${sfdc.password}" securityToken="${sfdc.securityToken}" username="${sfdc.username}" />
     </salesforce:sfdc-config>
-    
-    <ns4:siebel-config name="Siebel_JDB_Siebel" doc:id="b0b9a3fe-6564-4b6a-b7fb-f555f929a790" doc:name="Siebel JDB Siebel">
-        <ns4:basic-connection objectManager="${sieb.objectManager}" password="${sieb.password}" port="${sieb.port}" server="${sieb.server}" serverName="${sieb.serverName}" user="${sieb.user}" />
-    </ns4:siebel-config>
+
+    <siebel:siebel-config name="Siebel_JDB_Siebel" doc:id="b0b9a3fe-6564-4b6a-b7fb-f555f929a790" doc:name="Siebel JDB Siebel">
+        <siebel:basic-connection objectManager="${sieb.objectManager}" password="${sieb.password}" port="${sieb.port}" server="${sieb.server}" serverName="${sieb.serverName}" user="${sieb.user}" />
+    </siebel:siebel-config>
 
     <os:object-store name="watermarkStore" persistent="false" doc:name="Object store" />
 
